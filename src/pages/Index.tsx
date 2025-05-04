@@ -1,12 +1,23 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+
+import React from 'react';
+import Navbar from '@/components/layout/Navbar';
+import Footer from '@/components/layout/Footer';
+import HeroBanner from '@/components/home/HeroBanner';
+import ThreatSection from '@/components/home/ThreatSection';
+import VideoPreview from '@/components/home/VideoPreview';
+import QuizPromo from '@/components/home/QuizPromo';
 
 const Index = () => {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-gray-600">Start building your amazing project here!</p>
-      </div>
+    <div className="min-h-screen flex flex-col">
+      <Navbar />
+      <main className="flex-grow">
+        <HeroBanner />
+        <ThreatSection />
+        <VideoPreview />
+        <QuizPromo />
+      </main>
+      <Footer />
     </div>
   );
 };
