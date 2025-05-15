@@ -68,52 +68,7 @@ export const quizzes: Quiz[] = [
     ]
   },
   {
-    id: "malware",
-    title: "Malware Protection",
-    description: "Learn about different types of malware and how to protect your systems.",
-    difficulty: "Intermediate",
-    estimatedTime: "10-15 minutes",
-    questions: [
-      {
-        id: "malware-1",
-        text: "What is ransomware?",
-        options: [
-          { id: "m1a", text: "Software that displays unwanted advertisements" },
-          { id: "m1b", text: "Malicious software that encrypts your files and demands payment for decryption" },
-          { id: "m1c", text: "Software that creates a backdoor into your system" },
-          { id: "m1d", text: "A type of firewall protection" }
-        ],
-        correctAnswerId: "m1b",
-        explanation: "Ransomware encrypts a victim's files and demands payment to restore access to the data."
-      },
-      {
-        id: "malware-2",
-        text: "Which of these actions can help prevent malware infections?",
-        options: [
-          { id: "m2a", text: "Opening all email attachments to scan them" },
-          { id: "m2b", text: "Disabling your antivirus when installing new software" },
-          { id: "m2c", text: "Keeping your operating system and applications updated" },
-          { id: "m2d", text: "Downloading free software from any website" }
-        ],
-        correctAnswerId: "m2c",
-        explanation: "Regular updates patch security vulnerabilities that malware could exploit."
-      },
-      {
-        id: "malware-3",
-        text: "What is a Trojan horse in computer security?",
-        options: [
-          { id: "m3a", text: "A physical device used to hack computers" },
-          { id: "m3b", text: "Malware that appears legitimate but contains harmful code" },
-          { id: "m3c", text: "A type of encryption algorithm" },
-          { id: "m3d", text: "A defensive software that blocks hackers" }
-        ],
-        correctAnswerId: "m3b",
-        explanation: "Trojan horses are malicious programs that misrepresent themselves as useful software but actually cause damage."
-      }
-    ]
-  },
-  {
-    id: "passwords",
+    id: "password-security",
     title: "Password Security",
     description: "Test your knowledge about creating and managing secure passwords.",
     difficulty: "Beginner",
@@ -175,18 +130,105 @@ export const quizzes: Quiz[] = [
         ],
         correctAnswerId: "se2d",
         explanation: "Fireproofing is not a social engineering technique; it's related to physical building safety. Phishing, pretexting, and baiting are all social engineering methods."
+      }
+    ]
+  },
+  {
+    id: "malware-ransomware",
+    title: "Malware & Ransomware Protection",
+    description: "Learn about different types of malware and how to protect your systems.",
+    difficulty: "Intermediate",
+    estimatedTime: "10-15 minutes",
+    questions: [
+      {
+        id: "malware-1",
+        text: "What is ransomware?",
+        options: [
+          { id: "m1a", text: "Software that displays unwanted advertisements" },
+          { id: "m1b", text: "Malicious software that encrypts your files and demands payment for decryption" },
+          { id: "m1c", text: "Software that creates a backdoor into your system" },
+          { id: "m1d", text: "A type of firewall protection" }
+        ],
+        correctAnswerId: "m1b",
+        explanation: "Ransomware encrypts a victim's files and demands payment to restore access to the data."
       },
       {
-        id: "se-3",
-        text: "What is tailgating in the context of physical security?",
+        id: "malware-2",
+        text: "Which of these actions can help prevent malware infections?",
         options: [
-          { id: "se3a", text: "Following too closely behind another vehicle" },
-          { id: "se3b", text: "Following an authorized person through a secure door without permission" },
-          { id: "se3c", text: "A method of network monitoring" },
-          { id: "se3d", text: "Using specific keywords to appear in search results" }
+          { id: "m2a", text: "Opening all email attachments to scan them" },
+          { id: "m2b", text: "Disabling your antivirus when installing new software" },
+          { id: "m2c", text: "Keeping your operating system and applications updated" },
+          { id: "m2d", text: "Downloading free software from any website" }
         ],
-        correctAnswerId: "se3b",
-        explanation: "Tailgating is when an unauthorized person follows an authorized person into a secured area without using their own credentials."
+        correctAnswerId: "m2c",
+        explanation: "Regular updates patch security vulnerabilities that malware could exploit."
+      }
+    ]
+  },
+  {
+    id: "physical-security",
+    title: "Physical Security",
+    description: "Test your knowledge about protecting physical devices and spaces.",
+    difficulty: "Beginner",
+    estimatedTime: "8 minutes",
+    questions: [
+      {
+        id: "ps-1",
+        text: "Which of the following is NOT a good physical security practice?",
+        options: [
+          { id: "ps1a", text: "Locking your computer when you leave your desk" },
+          { id: "ps1b", text: "Allowing tailgating to be polite to colleagues" },
+          { id: "ps1c", text: "Securing server rooms with access control systems" },
+          { id: "ps1d", text: "Using privacy screens on monitors in public spaces" }
+        ],
+        correctAnswerId: "ps1b",
+        explanation: "Tailgating (allowing someone to follow you through a secure door) compromises physical security, even if they appear to be colleagues."
+      },
+      {
+        id: "ps-2",
+        text: "What should you do with sensitive documents you no longer need?",
+        options: [
+          { id: "ps2a", text: "Throw them in the regular trash" },
+          { id: "ps2b", text: "Recycle them with other paper" },
+          { id: "ps2c", text: "Shred them completely" },
+          { id: "ps2d", text: "Keep them indefinitely" }
+        ],
+        correctAnswerId: "ps2c",
+        explanation: "Shredding sensitive documents prevents dumpster diving and information theft."
+      }
+    ]
+  },
+  {
+    id: "public-wifi",
+    title: "Public Wi-Fi Security",
+    description: "Learn about the risks of public Wi-Fi networks and how to stay safe.",
+    difficulty: "Intermediate",
+    estimatedTime: "7-10 minutes",
+    questions: [
+      {
+        id: "wifi-1",
+        text: "Which of these is the safest way to use public Wi-Fi?",
+        options: [
+          { id: "w1a", text: "Connect to any free network available" },
+          { id: "w1b", text: "Use a VPN to encrypt your connection" },
+          { id: "w1c", text: "Turn off your firewall to speed up the connection" },
+          { id: "w1d", text: "Share your login credentials with others to save bandwidth" }
+        ],
+        correctAnswerId: "w1b",
+        explanation: "A VPN (Virtual Private Network) encrypts your internet traffic, protecting your data while using public Wi-Fi."
+      },
+      {
+        id: "wifi-2",
+        text: "What is an 'evil twin' attack in the context of Wi-Fi security?",
+        options: [
+          { id: "w2a", text: "When twins hack into a network together" },
+          { id: "w2b", text: "When a hacker creates a rogue access point that mimics a legitimate network" },
+          { id: "w2c", text: "A virus that duplicates itself on your device" },
+          { id: "w2d", text: "When two devices have the same MAC address" }
+        ],
+        correctAnswerId: "w2b",
+        explanation: "An 'evil twin' attack occurs when an attacker sets up a fake Wi-Fi hotspot that looks identical to a legitimate one to intercept user data."
       }
     ]
   }
