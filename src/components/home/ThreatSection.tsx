@@ -3,7 +3,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Shield, Lock, Handshake, Virus, DoorClosed, Wifi } from "lucide-react";
+import { Shield, Lock, Bug } from "lucide-react";
 
 const threats = [
   {
@@ -22,7 +22,7 @@ const threats = [
     id: "malware-ransomware",
     title: "Malware & Ransomware",
     description: "Understand different types of malicious software and how to protect your systems from infections.",
-    icon: Virus
+    icon: Bug
   }
 ];
 
