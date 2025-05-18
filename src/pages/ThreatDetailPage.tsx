@@ -1,10 +1,18 @@
 
 import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import { Button } from '@/components/ui/button';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Card, CardContent } from '@/components/ui/card';
 import { threats } from '@/data/threatsData';
+import { posters } from '@/data/postersData';
+import { videos } from '@/data/videosData';
+import { quizzes } from '@/data/quizData';
+import VideoCard from '@/components/videos/VideoCard';
+import PosterCard from '@/components/posters/PosterCard';
 import { useToast } from '@/components/ui/use-toast';
 
 const ThreatDetailPage = () => {
@@ -26,6 +34,16 @@ const ThreatDetailPage = () => {
     
     return null;
   }
+
+  // Filter related resources based on threat category
+  const relatedPosters = posters.filter(poster => 
+    poster.category.toLowerCase() === threat.title.toLowerCase());
+  
+  const relatedVideos = videos.filter(video => 
+    video.category.toLowerCase() === threat.title.toLowerCase());
+  
+  const relatedQuiz = quizzes.find(quiz => 
+    quiz.id.toLowerCase() === id);
   
   const getRiskLevelColor = () => {
     switch (threat.riskLevel) {
@@ -61,66 +79,122 @@ const ThreatDetailPage = () => {
         </div>
         
         <div className="container mx-auto px-4 py-12">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <div className="lg:col-span-2">
-              <div className="prose max-w-none">
-                <h2 className="text-2xl font-bold mb-4">What is {threat.title}?</h2>
-                <p className="mb-6 text-gray-700">{threat.fullDescription}</p>
-                
-                <h2 className="text-2xl font-bold mb-4">Prevention Tips</h2>
-                <ul className="space-y-2 list-disc pl-6">
-                  {threat.preventionTips.map((tip, index) => (
-                    <li key={index} className="text-gray-700">{tip}</li>
-                  ))}
-                </ul>
-              </div>
-            </div>
+          <Tabs defaultValue="overview" className="mb-8">
+            <TabsList className="mb-8">
+              <TabsTrigger value="overview">Overview</TabsTrigger>
+              <TabsTrigger value="posters">Posters</TabsTrigger>
+              <TabsTrigger value="videos">Videos</TabsTrigger>
+              <TabsTrigger value="quizzes">Quiz</TabsTrigger>
+            </TabsList>
             
-            <div className="lg:col-span-1">
-              <div className="rounded-lg overflow-hidden shadow-lg mb-6">
-                <img 
-                  src={threat.image} 
-                  alt={threat.title} 
-                  className="w-full h-64 object-cover"
-                />
-              </div>
-              
-              <div className="bg-gray-50 p-6 rounded-lg shadow">
-                <h3 className="text-xl font-bold mb-4">Related Resources</h3>
-                <ul className="space-y-4">
-                  <li>
-                    <a 
-                      href="#" 
-                      className="text-blue-600 hover:text-blue-800 hover:underline"
-                    >
-                      How to Identify {threat.title}
-                    </a>
-                  </li>
-                  <li>
-                    <a 
-                      href="#" 
-                      className="text-blue-600 hover:text-blue-800 hover:underline"
-                    >
-                      Recent {threat.title} Incidents
-                    </a>
-                  </li>
-                  <li>
-                    <a 
-                      href="#" 
-                      className="text-blue-600 hover:text-blue-800 hover:underline"
-                    >
-                      Tools to Prevent {threat.title}
-                    </a>
-                  </li>
-                </ul>
+            <TabsContent value="overview">
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <div className="lg:col-span-2">
+                  <div className="prose max-w-none">
+                    <h2 className="text-2xl font-bold mb-4">What is {threat.title}?</h2>
+                    <p className="mb-6 text-gray-700">{threat.fullDescription}</p>
+                    
+                    <h2 className="text-2xl font-bold mb-4">Prevention Tips</h2>
+                    <ul className="space-y-2 list-disc pl-6">
+                      {threat.preventionTips.map((tip, index) => (
+                        <li key={index} className="text-gray-700">{tip}</li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
                 
-                <h3 className="text-xl font-bold mt-6 mb-4">Test Your Knowledge</h3>
-                <Button asChild className="w-full">
-                  <a href="/quiz">Take a Quiz</a>
-                </Button>
+                <div className="lg:col-span-1">
+                  <div className="rounded-lg overflow-hidden shadow-lg mb-6">
+                    <img 
+                      src={threat.image} 
+                      alt={threat.title} 
+                      className="w-full h-64 object-cover"
+                    />
+                  </div>
+                  
+                  <div className="bg-gray-50 p-6 rounded-lg shadow">
+                    <h3 className="text-xl font-bold mb-4">Related Resources</h3>
+                    <ul className="space-y-4">
+                      <li>
+                        <Button variant="link" asChild className="p-0 h-auto text-blue-600 hover:text-blue-800">
+                          <Link to="#posters">View Related Posters</Link>
+                        </Button>
+                      </li>
+                      <li>
+                        <Button variant="link" asChild className="p-0 h-auto text-blue-600 hover:text-blue-800">
+                          <Link to="#videos">Watch Training Videos</Link>
+                        </Button>
+                      </li>
+                      <li>
+                        <Button variant="link" asChild className="p-0 h-auto text-blue-600 hover:text-blue-800">
+                          <Link to={`/quiz/${id}`}>Take a Quiz</Link>
+                        </Button>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
+            </TabsContent>
+            
+            <TabsContent value="posters" id="posters">
+              <h2 className="text-2xl font-bold mb-6">{threat.title} Training Posters</h2>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {relatedPosters.length > 0 ? (
+                  relatedPosters.map(poster => (
+                    <PosterCard 
+                      key={poster.id}
+                      title={poster.title}
+                      image={poster.image}
+                      category={poster.category}
+                    />
+                  ))
+                ) : (
+                  <p className="text-gray-500 col-span-full">No posters available for this topic yet.</p>
+                )}
+              </div>
+            </TabsContent>
+            
+            <TabsContent value="videos" id="videos">
+              <h2 className="text-2xl font-bold mb-6">{threat.title} Training Videos</h2>
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                {relatedVideos.length > 0 ? (
+                  relatedVideos.map(video => (
+                    <VideoCard 
+                      key={video.id}
+                      title={video.title}
+                      embedId={video.embedId}
+                      duration={video.duration}
+                      source={video.source}
+                    />
+                  ))
+                ) : (
+                  <p className="text-gray-500 col-span-full">No videos available for this topic yet.</p>
+                )}
+              </div>
+            </TabsContent>
+            
+            <TabsContent value="quizzes" id="quizzes">
+              <h2 className="text-2xl font-bold mb-6">Test Your Knowledge</h2>
+              {relatedQuiz ? (
+                <Card className="mb-6">
+                  <CardContent className="pt-6">
+                    <h3 className="text-xl font-bold mb-2">{relatedQuiz.title}</h3>
+                    <p className="text-gray-600 mb-4">{relatedQuiz.description}</p>
+                    <div className="flex items-center text-sm text-gray-500 space-x-4 mb-4">
+                      <span>Difficulty: {relatedQuiz.difficulty}</span>
+                      <span>{relatedQuiz.questions.length} questions</span>
+                      <span>Estimated time: {relatedQuiz.estimatedTime}</span>
+                    </div>
+                    <Button asChild>
+                      <Link to={`/quiz/${id}`}>Start Quiz</Link>
+                    </Button>
+                  </CardContent>
+                </Card>
+              ) : (
+                <p className="text-gray-500">No quiz available for this topic yet.</p>
+              )}
+            </TabsContent>
+          </Tabs>
         </div>
       </main>
       
