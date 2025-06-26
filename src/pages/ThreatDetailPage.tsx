@@ -55,6 +55,24 @@ const ThreatDetailPage = () => {
     }
   };
 
+  const handleQuizNavigation = () => {
+    navigate(`/quiz/${id}`);
+  };
+
+  const handlePostersScroll = () => {
+    const postersElement = document.getElementById('posters');
+    if (postersElement) {
+      postersElement.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  const handleVideosScroll = () => {
+    const videosElement = document.getElementById('videos');
+    if (videosElement) {
+      videosElement.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
@@ -65,7 +83,7 @@ const ThreatDetailPage = () => {
             <Button 
               variant="outline" 
               onClick={() => navigate('/threats')}
-              className="text-white border-white mb-6"
+              className="text-white border-white hover:bg-white hover:text-gray-900 mb-6"
             >
               Back to Threats
             </Button>
@@ -116,18 +134,30 @@ const ThreatDetailPage = () => {
                     <h3 className="text-xl font-bold mb-4">Related Resources</h3>
                     <ul className="space-y-4">
                       <li>
-                        <Button variant="link" asChild className="p-0 h-auto text-blue-600 hover:text-blue-800">
-                          <Link to="#posters">View Related Posters</Link>
+                        <Button 
+                          variant="default" 
+                          onClick={handlePostersScroll}
+                          className="w-full bg-blue-600 hover:bg-blue-700 text-white"
+                        >
+                          View Related Posters
                         </Button>
                       </li>
                       <li>
-                        <Button variant="link" asChild className="p-0 h-auto text-blue-600 hover:text-blue-800">
-                          <Link to="#videos">Watch Training Videos</Link>
+                        <Button 
+                          variant="default" 
+                          onClick={handleVideosScroll}
+                          className="w-full bg-green-600 hover:bg-green-700 text-white"
+                        >
+                          Watch Training Videos
                         </Button>
                       </li>
                       <li>
-                        <Button variant="link" asChild className="p-0 h-auto text-blue-600 hover:text-blue-800">
-                          <Link to={`/quiz/${id}`}>Take a Quiz</Link>
+                        <Button 
+                          variant="default" 
+                          onClick={handleQuizNavigation}
+                          className="w-full bg-purple-600 hover:bg-purple-700 text-white"
+                        >
+                          Take a Quiz
                         </Button>
                       </li>
                     </ul>
@@ -185,8 +215,11 @@ const ThreatDetailPage = () => {
                       <span>{relatedQuiz.questions.length} questions</span>
                       <span>Estimated time: {relatedQuiz.estimatedTime}</span>
                     </div>
-                    <Button asChild>
-                      <Link to={`/quiz/${id}`}>Start Quiz</Link>
+                    <Button 
+                      onClick={handleQuizNavigation}
+                      className="bg-purple-600 hover:bg-purple-700 text-white"
+                    >
+                      Start Quiz
                     </Button>
                   </CardContent>
                 </Card>
