@@ -21,14 +21,12 @@ const Navbar = () => {
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex space-x-6">
+          <div className="hidden md:flex space-x-8">
             <Link to="/" className="text-gray-700 hover:text-cyber-purple font-medium">Home</Link>
             <Link to="/threats" className="text-gray-700 hover:text-cyber-purple font-medium">Threats</Link>
-            <Link to="/threat-dashboard" className="text-gray-700 hover:text-cyber-purple font-medium">Live Threats</Link>
-            <Link to="/phishing-simulator" className="text-gray-700 hover:text-cyber-purple font-medium">Phishing Test</Link>
-            <Link to="/fraud-reports" className="text-gray-700 hover:text-cyber-purple font-medium">Fraud Reports</Link>
-            <Link to="/link-checker" className="text-gray-700 hover:text-cyber-purple font-medium">Link Checker</Link>
-            <Link to="/security-profile" className="text-gray-700 hover:text-cyber-purple font-medium">My Profile</Link>
+            <Link to="/videos" className="text-gray-700 hover:text-cyber-purple font-medium">Videos</Link>
+            <Link to="/posters" className="text-gray-700 hover:text-cyber-purple font-medium">Posters</Link>
+            <Link to="/quiz" className="text-gray-700 hover:text-cyber-purple font-medium">Quiz</Link>
           </div>
 
           {/* Mobile menu button */}
