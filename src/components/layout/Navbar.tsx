@@ -25,8 +25,6 @@ const Navbar = () => {
             <Link to="/" className="text-gray-700 hover:text-cyber-purple font-medium">Home</Link>
             <Link to="/threats" className="text-gray-700 hover:text-cyber-purple font-medium">Threats</Link>
             <Link to="/threat-dashboard" className="text-gray-700 hover:text-cyber-purple font-medium">Live Threats</Link>
-            <Link to="/phishing-simulator" className="text-gray-700 hover:text-cyber-purple font-medium">Phishing Test</Link>
-            <Link to="/fraud-reports" className="text-gray-700 hover:text-cyber-purple font-medium">Fraud Reports</Link>
             <Link to="/link-checker" className="text-gray-700 hover:text-cyber-purple font-medium">Link Checker</Link>
             <Link to="/security-profile" className="text-gray-700 hover:text-cyber-purple font-medium">My Profile</Link>
           </div>
@@ -63,25 +61,25 @@ const Navbar = () => {
                 Threats
               </Link>
               <Link 
-                to="/videos" 
+                to="/threat-dashboard" 
                 className="text-gray-700 hover:text-cyber-purple font-medium py-2"
                 onClick={() => setIsMenuOpen(false)}
               >
-                Videos
+                Live Threats
               </Link>
               <Link 
-                to="/posters" 
+                to="/link-checker" 
                 className="text-gray-700 hover:text-cyber-purple font-medium py-2"
                 onClick={() => setIsMenuOpen(false)}
               >
-                Posters
+                Link Checker
               </Link>
               <Link 
-                to="/quiz" 
+                to="/security-profile" 
                 className="text-gray-700 hover:text-cyber-purple font-medium py-2"
                 onClick={() => setIsMenuOpen(false)}
               >
-                Quiz
+                My Profile
               </Link>
             </div>
           </div>

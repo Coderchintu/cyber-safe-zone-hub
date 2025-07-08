@@ -7,7 +7,8 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Badge } from '@/components/ui/badge';
-import { Shield, AlertTriangle, CheckCircle } from 'lucide-react';
+import { Shield, AlertTriangle, CheckCircle, Search } from 'lucide-react';
+import { checkURL } from '@/services/urlChecker';
 
 const LinkCheckerPage = () => {
   const [url, setUrl] = useState('');
@@ -18,46 +19,61 @@ const LinkCheckerPage = () => {
     if (!url) return;
     
     setChecking(true);
-    // Simulate URL checking
-    setTimeout(() => {
-      const isSafe = Math.random() > 0.3; // 70% chance of being safe
+    try {
+      const result = await checkURL(url);
+      setResult(result);
+    } catch (error) {
+      console.error('URL check failed:', error);
       setResult({
         url,
-        safe: isSafe,
-        riskLevel: isSafe ? 'Low' : ['Medium', 'High', 'Critical'][Math.floor(Math.random() * 3)],
-        threats: isSafe ? [] : ['Phishing', 'Malware', 'Suspicious Redirects'][Math.floor(Math.random() * 3)],
-        reputation: isSafe ? 'Good' : 'Poor',
+        safe: false,
+        riskLevel: 'Critical',
+        threats: ['Analysis Failed'],
+        reputation: 'Unknown',
         lastScanned: new Date().toISOString()
       });
+    } finally {
       setChecking(false);
-    }, 2000);
+    }
   };
 
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
       <PageHeader 
-        title="Safe Link Checker" 
-        subtitle="Verify the safety of URLs before clicking"
+        title="Real-Time Link Security Scanner" 
+        subtitle="Check URLs against global phishing databases and security threat intelligence"
       />
       
       <main className="flex-grow container mx-auto px-4 py-8">
         <Card className="max-w-2xl mx-auto mb-8">
           <CardHeader>
-            <CardTitle>Check URL Safety</CardTitle>
+            <div className="flex items-center gap-2">
+              <Search className="h-5 w-5" />
+              <CardTitle>Advanced URL Security Analysis</CardTitle>
+            </div>
+            <p className="text-sm text-muted-foreground">
+              Real-time scanning against PhishTank database, SSL verification, and domain reputation analysis
+            </p>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="flex gap-2">
               <Input
                 value={url}
                 onChange={(e) => setUrl(e.target.value)}
-                placeholder="Enter URL to check (e.g., https://example.com)"
+                placeholder="Enter URL to scan (e.g., https://suspicious-site.com)"
                 className="flex-1"
+                onKeyPress={(e) => e.key === 'Enter' && checkUrl()}
               />
               <Button onClick={checkUrl} disabled={!url || checking}>
-                {checking ? 'Checking...' : 'Check URL'}
+                {checking ? 'Scanning...' : 'Scan URL'}
               </Button>
             </div>
+            {checking && (
+              <div className="text-sm text-muted-foreground">
+                Checking against PhishTank database, analyzing domain patterns, and verifying SSL certificates...
+              </div>
+            )}
           </CardContent>
         </Card>
 
@@ -93,13 +109,36 @@ const LinkCheckerPage = () => {
                 </div>
               </div>
 
-              {!result.safe && result.threats && (
+              {!result.safe && result.threats && result.threats.length > 0 && (
                 <Alert className="border-red-200 bg-red-50">
                   <AlertTriangle className="h-4 w-4 text-red-600" />
                   <AlertDescription className="text-red-800">
-                    <strong>Detected Threats:</strong> {result.threats}
+                    <strong>Detected Threats:</strong>
+                    <ul className="list-disc list-inside mt-1">
+                      {result.threats.map((threat, index) => (
+                        <li key={index}>{threat}</li>
+                      ))}
+                    </ul>
                   </AlertDescription>
                 </Alert>
+              )}
+
+              {result.details && (
+                <div className="space-y-2 text-sm">
+                  <h4 className="font-semibold">Technical Details:</h4>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                    {result.details.phishTankResult !== undefined && (
+                      <div>
+                        <strong>PhishTank Status:</strong> {result.details.phishTankResult ? 'Listed as Phishing' : 'Not in Database'}
+                      </div>
+                    )}
+                    {result.details.sslStatus && (
+                      <div>
+                        <strong>SSL Certificate:</strong> {result.details.sslStatus}
+                      </div>
+                    )}
+                  </div>
+                </div>
               )}
             </CardContent>
           </Card>

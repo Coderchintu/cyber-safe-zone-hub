@@ -12,8 +12,6 @@ import PostersPage from "./pages/PostersPage";
 import QuizPage from "./pages/QuizPage";
 import QuizDetailPage from "./pages/QuizDetailPage";
 import ThreatDashboardPage from "./pages/ThreatDashboardPage";
-import PhishingSimulatorPage from "./pages/PhishingSimulatorPage";
-import FraudReportPage from "./pages/FraudReportPage";
 import LinkCheckerPage from "./pages/LinkCheckerPage";
 import SecurityProfilePage from "./pages/SecurityProfilePage";
 import NotFound from "./pages/NotFound";
@@ -35,8 +33,6 @@ const App = () => (
           <Route path="/quiz" element={<QuizPage />} />
           <Route path="/quiz/:id" element={<QuizDetailPage />} />
           <Route path="/threat-dashboard" element={<ThreatDashboardPage />} />
-          <Route path="/phishing-simulator" element={<PhishingSimulatorPage />} />
-          <Route path="/fraud-reports" element={<FraudReportPage />} />
           <Route path="/link-checker" element={<LinkCheckerPage />} />
           <Route path="/security-profile" element={<SecurityProfilePage />} />
           <Route path="*" element={<NotFound />} />

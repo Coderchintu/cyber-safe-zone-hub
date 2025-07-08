@@ -7,16 +7,51 @@ import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { AlertTriangle, Shield, TrendingUp, Activity } from 'lucide-react';
-import { liveThreats, type LiveThreat } from '@/data/liveThreatsData';
+import { fetchLiveThreats, getThreatStats } from '@/services/threatIntelligence';
+
+interface LiveThreat {
+  id: string;
+  title: string;
+  description: string;
+  severity: 'Low' | 'Medium' | 'High' | 'Critical';
+  type: 'Data Breach' | 'Malware' | 'Phishing Campaign' | 'Ransomware' | 'Vulnerability';
+  affectedRegions: string[];
+  timestamp: string;
+  source: string;
+  affectedSectors: string[];
+  status: 'Active' | 'Contained' | 'Resolved';
+}
 
 const ThreatDashboardPage = () => {
   const [currentTime, setCurrentTime] = useState(new Date());
+  const [liveThreats, setLiveThreats] = useState<LiveThreat[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentTime(new Date());
     }, 1000);
     return () => clearInterval(timer);
+  }, []);
+
+  useEffect(() => {
+    const loadThreats = async () => {
+      setLoading(true);
+      try {
+        const threats = await fetchLiveThreats();
+        setLiveThreats(threats);
+      } catch (error) {
+        console.error('Failed to load threats:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadThreats();
+    
+    // Refresh threat data every 5 minutes
+    const refreshInterval = setInterval(loadThreats, 5 * 60 * 1000);
+    return () => clearInterval(refreshInterval);
   }, []);
 
   const getSeverityColor = (severity: string) => {
@@ -51,13 +86,14 @@ const ThreatDashboardPage = () => {
 
   const criticalThreats = liveThreats.filter(threat => threat.severity === 'Critical');
   const activeThreats = liveThreats.filter(threat => threat.status === 'Active');
+  const threatStats = getThreatStats(liveThreats);
 
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
       <PageHeader 
-        title="Live Threat Dashboard" 
-        subtitle="Real-time cybersecurity threats and incidents from around the world"
+        title="Live Indian Cybersecurity Threat Intelligence" 
+        subtitle="Real-time threats targeting India from CERT-In, RBI, and global security sources"
       />
       
       <main className="flex-grow container mx-auto px-4 py-8">
@@ -79,8 +115,8 @@ const ThreatDashboardPage = () => {
               <AlertTriangle className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{liveThreats.length}</div>
-              <p className="text-xs text-muted-foreground">Last 24 hours</p>
+              <div className="text-2xl font-bold">{threatStats.totalThreats}</div>
+              <p className="text-xs text-muted-foreground">Active threats tracked</p>
             </CardContent>
           </Card>
 
@@ -90,8 +126,8 @@ const ThreatDashboardPage = () => {
               <Activity className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{activeThreats.length}</div>
-              <p className="text-xs text-muted-foreground">Currently ongoing</p>
+              <div className="text-2xl font-bold">{threatStats.activeCampaigns}</div>
+              <p className="text-xs text-muted-foreground">Active campaigns</p>
             </CardContent>
           </Card>
 
@@ -101,8 +137,8 @@ const ThreatDashboardPage = () => {
               <Shield className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">127,543</div>
-              <p className="text-xs text-muted-foreground">+12% from yesterday</p>
+              <div className="text-2xl font-bold">{threatStats.blockedAttempts.toLocaleString()}</div>
+              <p className="text-xs text-muted-foreground">Attacks blocked today</p>
             </CardContent>
           </Card>
 
@@ -112,8 +148,14 @@ const ThreatDashboardPage = () => {
               <TrendingUp className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-orange-600">High</div>
-              <p className="text-xs text-muted-foreground">Elevated threat activity</p>
+              <div className={`text-2xl font-bold ${
+                threatStats.riskLevel === 'Critical' ? 'text-red-600' :
+                threatStats.riskLevel === 'High' ? 'text-orange-600' :
+                threatStats.riskLevel === 'Medium' ? 'text-yellow-600' : 'text-green-600'
+              }`}>
+                {threatStats.riskLevel}
+              </div>
+              <p className="text-xs text-muted-foreground">Current risk level</p>
             </CardContent>
           </Card>
         </div>
@@ -121,11 +163,14 @@ const ThreatDashboardPage = () => {
         {/* Live Updates */}
         <div className="mb-6">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-2xl font-bold">Live Threat Feed</h2>
+            <h2 className="text-2xl font-bold">Indian Cybersecurity Threat Feed</h2>
             <div className="text-sm text-muted-foreground">
-              Last updated: {currentTime.toLocaleTimeString()}
+              {loading ? 'Loading...' : `Last updated: ${currentTime.toLocaleTimeString()}`}
             </div>
           </div>
+          <p className="text-sm text-muted-foreground mb-4">
+            Intelligence sourced from CERT-In, RBI Cybersecurity, and verified threat databases
+          </p>
         </div>
 
         <Tabs defaultValue="all" className="space-y-6">
